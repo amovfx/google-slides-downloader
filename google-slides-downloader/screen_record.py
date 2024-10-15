@@ -5,6 +5,7 @@ import numpy as np
 from PIL import Image, ImageTk
 import tkinter as tk
 import threading
+import cv2
 
 
 def list_image_files(folder_path):
@@ -41,18 +42,17 @@ def display_image(image_path, window, image_label):
     window.geometry(f"+{x}+{y}")
 
 
-class Recorder:
+class AudioRecorder:
     def __init__(self):
         self.audio_stream = None
         self.audio_frames = []
         self.is_recording = False
         self.audio_thread = None
 
-    def start_recording(self, image_path):
+    def start_recording(self):
         self.is_recording = True
         self.audio_frames = []
 
-        # Start audio recording
         p = pyaudio.PyAudio()
         self.audio_stream = p.open(
             format=pyaudio.paInt16,
@@ -65,13 +65,12 @@ class Recorder:
         self.audio_thread = threading.Thread(target=self.record_audio)
         self.audio_thread.start()
 
-    def stop_recording(self, image_path):
+    def stop_recording(self, audio_file_path):
         self.is_recording = False
 
         if self.audio_thread:
             self.audio_thread.join()
 
-        # Stop audio recording
         if self.audio_stream:
             try:
                 self.audio_stream.stop_stream()
@@ -79,8 +78,6 @@ class Recorder:
             except:
                 print("Error closing audio stream")
 
-        # Save audio file
-        audio_file_path = image_path.rsplit(".", 1)[0] + "_audio.wav"
         try:
             with wave.open(audio_file_path, "wb") as wf:
                 wf.setnchannels(1)
@@ -95,6 +92,71 @@ class Recorder:
     def record_audio(self):
         while self.is_recording:
             self.audio_frames.append(self.audio_stream.read(1024))
+
+
+class VideoRecorder:
+    def __init__(self):
+        self.video_capture = None
+        self.video_writer = None
+        self.is_recording = False
+        self.video_thread = None
+
+    def start_recording(self, video_file_path):
+        self.is_recording = True
+
+        self.video_capture = cv2.VideoCapture(0)
+        if not self.video_capture.isOpened():
+            print("Error: Could not open camera.")
+            return
+
+        frame_width = int(self.video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+        frame_height = int(self.video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        fps = 30.0
+
+        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+        self.video_writer = cv2.VideoWriter(
+            video_file_path, fourcc, fps, (frame_width, frame_height)
+        )
+
+        self.video_thread = threading.Thread(target=self.record_video)
+        self.video_thread.start()
+
+    def stop_recording(self):
+        self.is_recording = False
+
+        if self.video_thread:
+            self.video_thread.join()
+
+        if self.video_capture:
+            self.video_capture.release()
+        if self.video_writer:
+            self.video_writer.release()
+        cv2.destroyAllWindows()
+
+    def record_video(self):
+        while self.is_recording:
+            ret, frame = self.video_capture.read()
+            if ret:
+                self.video_writer.write(frame)
+            else:
+                print("Error: Failed to capture video frame.")
+                break
+
+
+class Recorder:
+    def __init__(self):
+        self.audio_recorder = AudioRecorder()
+        self.video_recorder = VideoRecorder()
+
+    def start_recording(self, image_path):
+        video_file_path = image_path.rsplit(".", 1)[0] + "_video.mp4"
+        self.audio_recorder.start_recording()
+        self.video_recorder.start_recording(video_file_path)
+
+    def stop_recording(self, image_path):
+        audio_file_path = image_path.rsplit(".", 1)[0] + "_audio.wav"
+        self.audio_recorder.stop_recording(audio_file_path)
+        self.video_recorder.stop_recording()
 
 
 def main():
