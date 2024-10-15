@@ -1,9 +1,52 @@
+"use client";
+import html2canvas from "html2canvas";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [lastPressed, setLastPressed] = useState<string>("");
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.code === "Space") {
+        console.log("Space key pressed");
+        setLastPressed("Space");
+        event.preventDefault();
+        captureAndDownload();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
+
+  const captureAndDownload = () => {
+    console.log("Capturing screenshot...");
+    html2canvas(document.body, { useCORS: true }).then((canvas) => {
+      console.log("Screenshot captured, preparing download...");
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.download = "page-screenshot.png";
+          link.href = url;
+          link.click();
+          URL.revokeObjectURL(url);
+          console.log("Download initiated");
+        } else {
+          console.error("Failed to create blob from canvas");
+        }
+      }, "image/png");
+    });
+  };
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <p>Last key pressed: {lastPressed}</p>
         <Image
           className="dark:invert"
           src="https://nextjs.org/icons/next.svg"
