@@ -1,7 +1,3 @@
-import { promises as fs } from "fs";
-import yaml from "js-yaml";
-import path from "path";
-
 import Slide from "@/components/slide";
 import {
   Carousel,
@@ -9,21 +5,16 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 
-// Async function to read and parse the YAML file
-async function getSlideData() {
-  const filePath = path.join(process.cwd(), "src/data/01_Intro/manifest.yml");
-  const fileContents = await fs.readFile(filePath, "utf8");
-  return yaml.load(fileContents) as Array<{
-    title: string;
-    subtitle: string;
-    content: string | string[];
-    image: string;
-    imagePosition: "left" | "right";
-  }>;
-}
+import { getSlideData } from "./actions";
 
-export default async function Home() {
-  const slides = await getSlideData();
+// Async function to read and parse the YAML file
+
+export default async function SlidePage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const slides = await getSlideData(params.id);
 
   return (
     <div className="w-full h-full">
