@@ -3,3 +3,5 @@ token.json
 venv
 .env
 *.pyc
+*.jpg
+*.png

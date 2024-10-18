@@ -28,7 +28,9 @@ async function captureScreenshots(id: string) {
 
   for (let i = 0; i < slideCount; i++) {
     // Wait for the slide to be visible
-    await page.waitForSelector(".carousel-item", { state: "visible" });
+    await page.waitForSelector('[role="group"][aria-roledescription="slide"]', {
+      state: "visible",
+    });
 
     // Take a screenshot and save it in the new folder
     await page.screenshot({
