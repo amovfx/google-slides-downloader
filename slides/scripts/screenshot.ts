@@ -1,3 +1,5 @@
+import * as fs from "fs";
+import * as path from "path";
 import { chromium } from "playwright";
 
 async function getSlideCount(id: string): Promise<number> {
@@ -15,13 +17,22 @@ async function captureScreenshots(id: string) {
 
   const slideCount = await getSlideCount(id);
 
+  // Create the folder for this id
+  const outputDir = path.join(
+    "/Users/andrew/git/google-slides-downloader/component_renderer",
+    id
+  );
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
   for (let i = 0; i < slideCount; i++) {
     // Wait for the slide to be visible
     await page.waitForSelector(".carousel-item", { state: "visible" });
 
-    // Take a screenshot
+    // Take a screenshot and save it in the new folder
     await page.screenshot({
-      path: `screenshot_${id}_${i + 1}.png`,
+      path: path.join(outputDir, `image_${i + 1}.png`),
       fullPage: true,
     });
 
