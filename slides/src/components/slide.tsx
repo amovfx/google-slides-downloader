@@ -1,8 +1,8 @@
-import fs from "fs/promises";
+"use client";
 import Image from "next/image";
-import path from "path";
 import React from "react";
 
+import { getImagePath } from "@/actions/slide";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface SlideProps {
@@ -16,21 +16,8 @@ interface SlideProps {
 }
 
 // Moved and modified getImagePath function
-async function getImagePath(index: number): Promise<string> {
-  const imageDir = path.join(process.cwd(), "public/images/01_Intro/");
-  const files = await fs.readdir(imageDir);
-  const imageFiles = files.filter((file) =>
-    /\.(jpg|jpeg|png|gif)$/i.test(file)
-  );
-  console.log(imageFiles);
 
-  if (index < imageFiles.length) {
-    return `/images/01_Intro/${imageFiles[index]}`;
-  }
-  return "/placeholder-image.jpg";
-}
-
-const Slide: React.FC<SlideProps> = async ({ item, index }) => {
+const Slide: React.FC<SlideProps> = ({ item, index }) => {
   const {
     title = "Saga",
     subtitle = "Default Subtitle",
@@ -40,7 +27,30 @@ const Slide: React.FC<SlideProps> = async ({ item, index }) => {
 
   const image = await getImagePath(index);
 
-  console.log(image);
+  const [spacebarPressCount, setSpacebarPressCount] = useState(0);
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.code === "Space") {
+        setSpacebarPressCount((prevCount) => {
+          const newCount = prevCount + 1;
+          if (newCount === 1) {
+            console.log("start");
+          } else if (newCount === 2) {
+            console.log("end");
+            return 0; // Reset the count after the second press
+          }
+          return newCount;
+        });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
   return (
     <div className="flex h-screen w-full items-center p-0 font-futura">
