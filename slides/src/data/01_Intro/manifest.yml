@@ -1,0 +1,84 @@
+- title: Welcome to S.A.A.G.A
+  subtitle: Socially Aligned Autonomous Generative Agent
+  content: Shaping the Future of Human-AI Cooperation through next generation capital markets.
+  image: /images/saaga_welcome.jpg
+  imagePosition: left
+
+- title: Our Mission
+  subtitle: An agent platform with three main capabilities
+  content:
+    - Shape human mythology and culture
+    - Access to ledgers
+    - Strong self correcting mechanism
+  image: /images/saaga_mission.jpg
+  imagePosition: right
+
+- title: Key Features
+  subtitle: Financial Products, Marketing, and Self Correction
+  content:
+    - "Financial Products: S.A.A.G.A can create and trade financial products, enabling it to purchase and sell goods and services."
+    - "Marketing: S.A.A.G.A can market itself across various social media platforms overtly. Transparency is a cornerstone principle."
+    - "Self Correction: Integrates feedback from users in the social sphere and adjusts its agent's prompts and code appropriately."
+  image: /images/saaga_features.jpg
+  imagePosition: left
+
+- title: Financial Access
+  subtitle: Asset Creation, Commerce, and Markets
+  content:
+    - "Asset Creation: S.A.A.G.A has API access to bitcoin, lightning, and taproot assets."
+    - "Commerce: With its own bitcoin wallet, it can purchase and sell goods and services."
+    - "Markets: S.A.A.G.A enables all agents to trade their goods and services in a global capital market."
+  image: /images/saaga_financial.jpg
+  imagePosition: right
+
+- title: V.I.M.P
+  subtitle: Vertically Integrated Market Product
+  content:
+    - Built on top of bitcoin to remove custody risk
+    - Replaces Transfer Agent with Taproot Assets
+    - Replace the clearing house with Bitcoin
+    - Replace market makers and consumer banks with lightning network
+    - Replace exchanges with atomic swaps
+  image: /images/saaga_vimp.jpg
+  imagePosition: left
+
+- title: Marketing Capabilities
+  subtitle: Shaping Collective Beliefs
+  content:
+    - Analyzes existing beliefs
+    - Creates and modifies narratives
+    - Disseminates Ideas
+    - Shapes collective beliefs
+  image: /images/saaga_marketing.jpg
+  imagePosition: right
+
+- title: Self Correction
+  subtitle: Continuous Improvement
+  content:
+    - Data-driven adaptability
+    - Continuous fine-tuning
+    - Social Media Integration
+    - Diverse perspective incorporation
+    - Prompt evolution
+    - Elections of expert humans
+    - Self-development
+  image: /images/saaga_self_correction.jpg
+  imagePosition: left
+
+- title: How does it work?
+  subtitle: Knowledge Graph and Adaptive Agents
+  content:
+    - "Knowledge Graph: Constructed over its domain of interest"
+    - "Graph Element Agent: Adaptive agents 'live' on the nodes and edges of the knowledge graph"
+    - "Adaptive Agents: Can learn by adjusting template prompts or tuning LLMs"
+  image: /images/saaga_how_it_works.jpg
+  imagePosition: right
+
+- title: Agent Architecture
+  subtitle: PFC Agent Cluster, Agent Striatum, and Agent Factory
+  content:
+    - "PFC Agent Cluster: Handles goal-setting, planning, problem-solving, and more"
+    - "Agent Striatum: Manages Cue Routine Reward loop for habit formation"
+    - "Agent Factory: Creates new agents when needed for task completion"
+  image: /images/saaga_architecture.jpg
+  imagePosition: left
