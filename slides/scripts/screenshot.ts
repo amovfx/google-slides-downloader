@@ -1,4 +1,3 @@
-import path from "path";
 import { chromium } from "playwright";
 
 async function getSlideCount(id: string): Promise<number> {
